@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/font/Inter-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/font/Roboto-Regular.ttf') format('truetype');
+}
+
+body {
+  box-sizing: border-box;
+  font-family: 'Inter';
+  font-size: 18px;
+  line-height: 28px;
+  padding: 0;
+  margin: 0;
+  background-color: #ebeef3;
+}

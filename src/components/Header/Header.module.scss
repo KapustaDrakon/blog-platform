@@ -1,0 +1,108 @@
+.header {
+  height: 80px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__title {
+  margin-left: 22px;
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__title,
+.header__title:active,
+.header__title:visited {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.header__buttons {
+  display: flex;
+  align-items: center;
+  margin-right: 22px;
+}
+
+.header__button-signin,
+.header__button-signin:active,
+.header__button-signin:visited {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.header__button-signup {
+  width: 109px;
+  height: 51px;
+  margin-left: 27px;
+  color: #52c41a;
+  border: 1px solid #52c41a;
+  border-radius: 5px;
+
+  background-color: inherit;
+  font-size: 18px;
+  line-height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+}
+
+.header__button-create-article {
+  width: 112px;
+  height: 31px;
+  color: #52c41a;
+  border: 1px solid #52c41a;
+  border-radius: 5px;
+
+  background-color: inherit;
+  font-size: 14px;
+  line-height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+}
+
+.header__button-logout {
+  width: 109px;
+  height: 51px;
+  margin-left: 27px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+
+  background-color: inherit;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.header__button-profile {
+  display: flex;
+  align-items: center;
+  margin-left: 27px;
+}
+
+.header__button-profile,
+.header__button-profile:active,
+.header__button-profile:visited {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.header__button-profile-image {
+  margin-left: 13px;
+}
+
+.button {
+  border: none;
+  background-color: inherit;
+  font-size: 18px;
+  line-height: 28px;
+}

@@ -1,0 +1,26 @@
+.ant-pagination-item {
+  min-width: 22px !important;
+  line-height: 22px !important;
+  border: none !important;
+}
+
+.ant-pagination-item-active {
+  max-width: max-content !important;
+  height: 22px !important;
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+.ant-pagination-item-active a {
+  color: #ffffff !important;
+}
+
+.ant-pagination {
+  font-family: 'Inter' !important;
+  font-size: 12px !important;
+  line-height: 22px !important;
+  color: rgba(0, 0, 0, 0.75) !important;
+
+  display: flex !important;
+  align-items: baseline !important;
+}
