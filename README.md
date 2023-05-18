@@ -1,1 +1,1 @@
-https://blog-platform-brown.vercel.app/
+https://blog-platform-kapustadrakon.vercel.app/
