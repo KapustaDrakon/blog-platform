@@ -24,7 +24,6 @@ const App = () => {
   const [error, setError] = useState(false);
 
   const getArticlesFunction = (pageState) => {
-    console.log('page getArticleFunction > ', pageState);
     (async () => {
       return await getRequest.getArticles(pageState).then((res) => {
         setError(false);
@@ -49,7 +48,7 @@ const App = () => {
     getArticlesCountFunction();
   }, []);
 
-  console.log('page STATE > ', pageState.current);
+  //let user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <Router>
@@ -74,11 +73,8 @@ const App = () => {
                     pageSize={5}
                     showSizeChanger={false}
                     onChange={(page) => {
-                      console.log('page ONCHANGE > ', page);
                       pageState.current = page;
-                      console.log(pageState.current);
                       getArticlesFunction(pageState.current);
-                      console.log(pageState.current);
                     }}
                   />
                 </div>
@@ -93,22 +89,19 @@ const App = () => {
                     pageSize={5}
                     showSizeChanger={false}
                     onChange={(page) => {
-                      console.log('page ONCHANGE > ', page);
                       pageState.current = page;
-                      console.log(pageState.current);
                       getArticlesFunction(pageState.current);
-                      console.log(pageState.current);
                     }}
                   />
                 </div>
               </Route>
-              <Route path="/sign_in" exact>
+              <Route path="/sign-in" exact>
                 <SignIn />
               </Route>
-              <Route path="/sign_up" exact>
+              <Route path="/sign-up" exact>
                 <CreateAcc />
               </Route>
-              <Route path="/create_article" exact>
+              <Route path="/create-article" exact>
                 <CreateArticle />
               </Route>
               <Route path="/profile" exact>

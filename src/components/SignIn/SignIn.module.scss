@@ -48,6 +48,24 @@
   line-height: 24px;
 }
 
+.sign-in__input:focus,
+.sign-in__input-error:focus {
+  outline: none;
+}
+
+.sign-in__input-error {
+  width: 296px;
+  height: 22px;
+  padding: 8px 12px;
+  margin-top: 2px;
+  border: 1px solid #f5222d;
+  border-radius: 4px;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
 .sign-in__input::placeholder {
   font-weight: 400;
   font-size: 16px;
@@ -82,6 +100,11 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+  cursor: pointer;
+}
+
+.sign-in__button-login:hover {
+  background-color: #1162ad;
 }
 
 .sign-in__havent {
@@ -93,6 +116,17 @@
   color: #8c8c8c;
 }
 
-.sign-in__signup {
+.sign-in__sign-up {
   color: #1890ff;
+  text-decoration: none;
+}
+
+.sign-in__error {
+  margin: 0;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #f5222d;
 }

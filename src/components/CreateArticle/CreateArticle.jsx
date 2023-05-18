@@ -1,10 +1,21 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 
 import classes from './CreateArticle.module.scss';
 
 const CreateArticle = () => {
+  const { register, handleSubmit, reset } = useForm({
+    mode: 'onSubmit',
+  });
+  //const tagList = [];
+
+  const onSubmit = (data) => {
+    console.log(data);
+    reset();
+  };
+
   return (
-    <form className={classes['create-article']}>
+    <form className={classes['create-article']} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={classes['create-article__title']}>Create new article</h2>
 
       <div>
@@ -17,6 +28,7 @@ const CreateArticle = () => {
           placeholder="Title"
           id="create-article_title"
           autoFocus
+          {...register('title')}
         ></input>
       </div>
 
@@ -29,6 +41,7 @@ const CreateArticle = () => {
           className={classes['create-article__input']}
           placeholder="Description"
           id="create-article_description"
+          {...register('description')}
         ></input>
       </div>
 
@@ -41,6 +54,7 @@ const CreateArticle = () => {
           className={classes['create-article__textarea']}
           placeholder="Text"
           id="create-article_text"
+          {...register('body')}
         ></textarea>
       </div>
 
@@ -54,6 +68,7 @@ const CreateArticle = () => {
             className={classes['create-article__input-tag']}
             placeholder="Tag"
             id="create-article_tags"
+            {...register('tag')}
           ></input>
           <button className={classes['create-article__button-delete']}>Delete</button>
           <button className={classes['create-article__button-add']}>Add tag</button>
@@ -65,6 +80,7 @@ const CreateArticle = () => {
             className={classes['create-article__input-tag']}
             placeholder="Tag"
             id="create-article_tags"
+            {...register('tag')}
           ></input>
           <button className={classes['create-article__button-delete']}>Delete</button>
           <button className={classes['create-article__button-add']}>Add tag</button>

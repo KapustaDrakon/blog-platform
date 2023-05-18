@@ -26,6 +26,10 @@
 }
 
 .article__title {
+  max-width: 600px;
+  max-height: 56px;
+  overflow: hidden;
+  overflow-wrap: break-word;
   font-size: 20px;
   line-height: 28px;
   margin: 0;
@@ -88,6 +92,7 @@
 .article__tags {
   display: flex;
   gap: 8px;
+  max-width: 682px;
 }
 
 .article__tag {
@@ -95,7 +100,9 @@
   justify-content: flex-start;
   align-items: center;
 
-  width: max-content;
+  max-width: 100px;
+  overflow: hidden;
+  overflow-wrap: break-word;
 
   padding-left: 6px;
   padding-right: 6px;
@@ -109,9 +116,12 @@
 }
 
 .article__description {
+  max-height: 66px;
   font-size: 12px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+  overflow-wrap: break-word;
 }
 
 .article_width {

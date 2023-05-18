@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 
@@ -10,7 +10,7 @@ import classes from './ArticleItem.module.scss';
 const ArticleItem = (props) => {
   const { article } = props;
   let idxTag = 0;
-  // console.log('article > ', article);
+  //console.log('article > ', article);
 
   const dateCreated = (date) => {
     if (date !== undefined) {
@@ -21,6 +21,13 @@ const ArticleItem = (props) => {
     return date;
   };
 
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      const likeButtons = document.getElementsByName(`like-${article.title}`);
+      [...likeButtons].map((like) => (like.disabled = true));
+    }
+  });
+
   return (
     <div className={classes.article__container}>
       <div className={classes.article_width}>
@@ -29,7 +36,12 @@ const ArticleItem = (props) => {
             <h2 className={classes.article__title}>{article.title}</h2>
           </Link>
           <label className={classes['article__likes-label']}>
-            <input type="checkbox" className={classes.article__likes} />
+            <input
+              type="checkbox"
+              id={`like-${article.title}`}
+              name={`like-${article.title}`}
+              className={classes.article__likes}
+            />
             <span className={classes['article__like-count']}>{article.favoritesCount}</span>
           </label>
         </div>

@@ -23,7 +23,7 @@ const ShowArticle = (props) => {
     <div className={classes.article__container}>
       <div className={classes.article_width}>
         <div className={classes['article__title-container']}>
-          <h2 className={classes.article__title}>{article.title}</h2>
+          <h2 className={classes2.article__title}>{article.title}</h2>
 
           <label className={classes['article__likes-label']}>
             <input type="checkbox" className={classes.article__likes} />
@@ -40,7 +40,7 @@ const ShowArticle = (props) => {
           })}
         </div>
 
-        <p className={classes.article__description}>{article.description}</p>
+        <p className={classes2.article__description}>{article.description}</p>
 
         <div className={classes2['article__body']}>
           <ReactMarkdown>{article.body}</ReactMarkdown>

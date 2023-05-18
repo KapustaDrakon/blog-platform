@@ -21,6 +21,11 @@
   color: rgba(0, 0, 0, 0.85);
 }
 
+.header__buttons-container {
+  display: flex;
+  align-items: center;
+}
+
 .header__buttons {
   display: flex;
   align-items: center;
@@ -81,6 +86,8 @@
   background-color: inherit;
   font-size: 18px;
   line-height: 28px;
+
+  cursor: pointer;
 }
 
 .header__button-profile {
@@ -98,6 +105,9 @@
 
 .header__button-profile-image {
   margin-left: 13px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
 }
 
 .button {

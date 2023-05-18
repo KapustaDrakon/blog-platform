@@ -1,10 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+
+import GetRequest from '../../services/GetRequest';
 
 import classes from './SignIn.module.scss';
 
 const SignIn = () => {
+  const getRequest = new GetRequest();
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: 'onSubmit',
+  });
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [errorText, setErrorText] = useState('');
+
+  if (isLogin) {
+    return <Redirect to="/" />;
+  }
+
+  const onSubmit = (data) => {
+    console.log(data);
+    data.email = data.email.toLowerCase();
+    console.log(data);
+    (async () => {
+      return await getRequest
+        .userLogin(data)
+        .then((res) => {
+          console.log('res > ', res);
+          console.log(Object.keys(res));
+
+          localStorage.setItem('user', null);
+
+          if (Object.keys(res).includes('errors')) {
+            const entries = Object.entries(res.errors);
+            const array = entries.map((arr) => {
+              if (arr.includes('email or password')) {
+                return 'Email or password is invalid';
+              }
+            });
+            setErrorText(array);
+            throw new Error();
+          } else {
+            localStorage.setItem('user', JSON.stringify(res.user));
+            reset();
+            setIsLogin(true);
+            location.reload();
+            return res;
+          }
+        })
+        .catch(() => {});
+    })();
+  };
+
   return (
-    <form className={classes['sign-in']}>
+    <form className={classes['sign-in']} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={classes['sign-in__title']}>Sign In</h2>
 
       <div>
@@ -13,11 +69,29 @@ const SignIn = () => {
         </label>
         <input
           type="text"
-          className={classes['sign-in__input']}
+          autoComplete="on"
+          className={
+            !errors.email && !errorText.includes('Email or password is invalid')
+              ? classes['sign-in__input']
+              : classes['sign-in__input-error']
+          }
           placeholder="Email address"
-          id="sign-in_email-addres"
+          id="sign-in_email-address"
           autoFocus
+          {...register('email', {
+            required: 'Is required to fill in',
+            pattern: /[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z0-9]+/,
+          })}
         ></input>
+
+        <div>
+          {errors?.email && (
+            <p className={classes['sign-in__error']}>{errors?.email.message || 'Filled incorrectly'}</p>
+          )}
+          {errorText.length !== 0 && errorText.includes('Email or password is invalid') ? (
+            <p className={classes['sign-in__error']}>Email or password is invalid</p>
+          ) : null}
+        </div>
       </div>
 
       <div>
@@ -26,10 +100,21 @@ const SignIn = () => {
         </label>
         <input
           type="password"
-          className={classes['sign-in__input']}
+          className={
+            !errors.password && !errorText.includes('Email or password is invalid')
+              ? classes['sign-in__input']
+              : classes['sign-in__input-error']
+          }
           placeholder="Password"
           id="sign-in_password"
+          {...register('password', {
+            required: 'Is required to fill in',
+          })}
         ></input>
+
+        <div>
+          {errors?.password && <p className={classes['sign-in__error']}>{errors?.password.message || 'Error'}</p>}
+        </div>
       </div>
 
       <div className={classes['sign-in__button-container']}>
@@ -37,7 +122,11 @@ const SignIn = () => {
           Login
         </button>
         <p className={classes['sign-in__havent']}>
-          Don’t have an account? <a className={classes['sign-in__signup']}>Sign Up</a>.
+          Don’t have an account?{' '}
+          <Link to="/sign-up" className={classes['sign-in__sign-up']}>
+            Sign Up
+          </Link>
+          .
         </p>
       </div>
     </form>

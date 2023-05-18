@@ -48,6 +48,24 @@
   line-height: 24px;
 }
 
+.create-account__input:focus,
+.create-account__input-error:focus {
+  outline: none;
+}
+
+.create-account__input-error {
+  width: 296px;
+  height: 22px;
+  padding: 8px 12px;
+  margin-top: 2px;
+  border: 1px solid #f5222d;
+  border-radius: 4px;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
 .create-account__input::placeholder {
   font-weight: 400;
   font-size: 16px;
@@ -103,6 +121,7 @@
   width: 14px;
   height: 14px;
   background: url('../../assets/images/Checkbox.svg') no-repeat center;
+  cursor: pointer;
 }
 
 .create-account__check-label {
@@ -117,6 +136,7 @@
   flex: none;
   order: 1;
   flex-grow: 0;
+  cursor: pointer;
 }
 
 .create-account__button-container {
@@ -133,6 +153,11 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+  cursor: pointer;
+}
+
+.create-account__button-create:hover {
+  background-color: #1162ad;
 }
 
 .create-account__already {
@@ -146,4 +171,15 @@
 
 .create-account__signin {
   color: #1890ff;
+  text-decoration: none;
+}
+
+.create-account__error {
+  margin: 0;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #f5222d;
 }
