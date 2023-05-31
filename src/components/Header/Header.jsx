@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-//import profile from '../../assets/images/Profile-Image.svg';
+import profile from '../../assets/images/Profile-Image.svg';
 
 import classes from './Header.module.scss';
 
-const Header = () => {
+const Header = ({ initial }) => {
   const buttonLogOut = () => {
     setIsLogin(false);
     setUser(null);
-    localStorage.clear();
+    localStorage.removeItem('user');
     location.reload();
   };
 
@@ -26,21 +27,26 @@ const Header = () => {
     setIsLogin(true);
   });
 
+  const imageFunc = () => {
+    if (user.image) return user.image;
+    else return profile;
+  };
+
   return (
     <div className={classes.header}>
-      <Link to="/articles" className={classes.header__title}>
+      <Link to="/articles" className={classes.header__title} onClick={() => initial()}>
         Realworld Blog
       </Link>
 
       <div className={classes['header__buttons-container']}>
         {isLogin ? (
           <div className={classes.header__buttons}>
-            <Link to="/create-article" className={`${classes['header__button-create-article']}`}>
+            <Link to="/new-article" className={`${classes['header__button-create-article']}`}>
               Create article
             </Link>
             <Link to="/profile" className={`${classes['header__button-profile']} ${classes.button}`}>
               {user.username}
-              <img className={classes['header__button-profile-image']} src={user.image} />
+              <img alt="profile" className={classes['header__button-profile-image']} src={imageFunc()} />
             </Link>
             <button className={`${classes['header__button-logout']}`} onClick={() => buttonLogOut()}>
               Log Out
@@ -61,98 +67,12 @@ const Header = () => {
   );
 };
 
-export default Header;
+Header.defaultProps = {
+  initial: () => {},
+};
 
-/*
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import profile from '../../assets/images/Profile-Image.svg';
-
-import classes from './Header.module.scss';
-
-class Header extends React.Component {
-  state = {
-    isLogin: false,
-    user: JSON.parse(localStorage.getItem('user')),
-  };
-
-  buttonLogOut = () => {
-    this.setState({
-      isLogin: false,
-      user: null,
-    });
-    localStorage.clear();
-    localStorage.setItem('isLogin', false);
-    console.log('вышел > ', false);
-
-    //location.reload();
-  };
-
-  buttonSignIn = () => {
-    //setLoad(false);
-    localStorage.setItem('isLogin', false);
-  };
-
-  //const [load, setLoad] = useState(JSON.parse(localStorage.getItem('isLogin')));
-
-  //console.log('user > ', user);
-
-  render() {
-    console.log('----------------------------------------------------');
-    console.log('user > ', JSON.parse(localStorage.getItem('user')));
-    console.log('login > ', this.state.isLogin);
-    console.log('load > ', JSON.parse(localStorage.getItem('isLogin')));
-
-    if (JSON.parse(localStorage.getItem('user')) !== null) {
-      return (
-        <div className={classes.header}>
-          <Link to="/articles" className={classes.header__title}>
-            Realworld Blog
-          </Link>
-
-          <div className={classes['header__buttons-container']}>
-            <div className={classes.header__buttons}>
-              <Link to="/create-article" className={`${classes['header__button-create-article']}`}>
-                Create article
-              </Link>
-              <Link to="/profile" className={`${classes['header__button-profile']} ${classes.button}`}>
-                {JSON.parse(localStorage.getItem('user')).username}
-                <img className={classes['header__button-profile-image']} src={profile} />
-              </Link>
-              <button className={`${classes['header__button-logout']}`} onClick={() => this.buttonLogOut()}>
-                Log Out
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={classes.header}>
-          <Link to="/articles" className={classes.header__title}>
-            Realworld Blog
-          </Link>
-
-          <div className={classes['header__buttons-container']}>
-            <div className={classes.header__buttons}>
-              <Link
-                to="/sign-in"
-                className={`${classes['header__button-signin']} ${classes.button}`}
-                onClick={() => this.buttonSignIn()}
-              >
-                Sign In
-              </Link>
-              <Link to="/sign-up" className={`${classes['header__button-signup']}`}>
-                Sigh Up
-              </Link>
-            </div>
-          </div>
-        </div>
-      );
-    }
-  }
-}
+Header.propTypes = {
+  initial: PropTypes.func,
+};
 
 export default Header;
-*/

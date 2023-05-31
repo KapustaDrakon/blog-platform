@@ -1,19 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { ArticleItem } from '../ArcticleItem';
 
-import classes from './ArticlesList.module.scss';
-
 const ArticlesList = (props) => {
-  if (props.articles !== undefined) {
+  const { articles, initial } = props;
+  if (articles !== undefined) {
     return (
-      <div className={classes['article-list']}>
-        {props.articles.map((article) => (
-          <ArticleItem article={article} key={article.slug} />
+      <div>
+        {articles.map((article) => (
+          <ArticleItem article={article} key={article.slug} initial={initial} />
         ))}
       </div>
     );
   }
+};
+
+ArticlesList.defaultProps = {
+  articles: [],
+  initial: () => {},
+};
+
+ArticlesList.propTypes = {
+  articles: PropTypes.array,
+  initial: PropTypes.func,
 };
 
 export default ArticlesList;

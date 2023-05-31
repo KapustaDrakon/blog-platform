@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .sign-in {
   width: 320px;
 
@@ -5,8 +7,8 @@
   margin-top: 59px;
   gap: 21px;
 
-  background-color: #ffffff;
-  border: 1px solid #d9d9d9;
+  background-color: $white;
+  border: 1px solid $whiteBorder;
   box-shadow: 0px 22px 106px rgba(0, 0, 0, 0.07), 0px 9.19107px 44.2843px rgba(0, 0, 0, 0.0503198),
     0px 4.91399px 23.6765px rgba(0, 0, 0, 0.0417275), 0px 2.75474px 13.2728px rgba(0, 0, 0, 0.035),
     0px 1.46302px 7.04911px rgba(0, 0, 0, 0.0282725), 0px 0.608796px 2.93329px rgba(0, 0, 0, 0.0196802);
@@ -16,7 +18,7 @@
   flex-direction: column;
   align-items: flex-start;
 
-  color: #262626;
+  color: $blackLetters;
   font-family: 'Roboto';
 }
 
@@ -40,7 +42,7 @@
   height: 22px;
   padding: 8px 12px;
   margin-top: 2px;
-  border: 1px solid #d9d9d9;
+  border: 1px solid $whiteBorder;
   border-radius: 4px;
 
   font-weight: 400;
@@ -58,7 +60,7 @@
   height: 22px;
   padding: 8px 12px;
   margin-top: 2px;
-  border: 1px solid #f5222d;
+  border: 1px solid $red;
   border-radius: 4px;
 
   font-weight: 400;
@@ -72,7 +74,7 @@
   line-height: 24px;
   display: flex;
   align-items: center;
-  color: #bfbfbf;
+  color: $whiteLetters;
 }
 
 .sign-in__input-label {
@@ -92,8 +94,8 @@
 
 .sign-in__button-login {
   border: none;
-  background-color: #1890ff;
-  color: #ffffff;
+  background-color: $blue;
+  color: $white;
   border-radius: 4px;
   width: inherit;
   height: 40px;
@@ -104,7 +106,7 @@
 }
 
 .sign-in__button-login:hover {
-  background-color: #1162ad;
+  background-color: $darkBlue;
 }
 
 .sign-in__havent {
@@ -113,11 +115,11 @@
   font-size: 12px;
   line-height: 20px;
   text-align: center;
-  color: #8c8c8c;
+  color: $lightGrey;
 }
 
 .sign-in__sign-up {
-  color: #1890ff;
+  color: $blue;
   text-decoration: none;
 }
 
@@ -128,5 +130,5 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: #f5222d;
+  color: $red;
 }

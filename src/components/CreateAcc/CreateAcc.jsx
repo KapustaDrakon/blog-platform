@@ -36,9 +36,14 @@ const CreateAcc = () => {
         .then((res) => {
           if (Object.keys(res).includes('errors')) {
             const entries = Object.entries(res.errors);
+            console.log(entries);
             const array = entries.map((arr) => {
               if (arr.includes('username')) {
-                return 'Username is already taken';
+                if (arr.includes('is already taken.')) {
+                  return 'Username is already taken';
+                } else if (arr.includes('is invalid')) {
+                  return 'Username is invalid';
+                }
               } else if (arr.includes('email')) {
                 return 'Email is already taken';
               }
@@ -66,7 +71,9 @@ const CreateAcc = () => {
         <input
           type="text"
           className={
-            !errors.username && !errorText.includes('Username is already taken')
+            !errors.username &&
+            !errorText.includes('Username is already taken') &&
+            !errorText.includes('Username is invalid')
               ? classes['create-account__input']
               : classes['create-account__input-error']
           }
@@ -92,6 +99,9 @@ const CreateAcc = () => {
           )}
           {errorText.length !== 0 && errorText.includes('Username is already taken') ? (
             <p className={classes['create-account__error']}>Username is already taken</p>
+          ) : null}
+          {errorText.length !== 0 && errorText.includes('Username is invalid') ? (
+            <p className={classes['create-account__error']}>Username is invalid</p>
           ) : null}
         </div>
       </div>
@@ -144,6 +154,7 @@ const CreateAcc = () => {
               message: 'Your password must be no more than 40 characters.',
             },
             required: 'Is required to fill in',
+            pattern: /^\S*$/,
           })}
         ></input>
 

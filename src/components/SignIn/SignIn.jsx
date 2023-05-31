@@ -33,11 +33,6 @@ const SignIn = () => {
       return await getRequest
         .userLogin(data)
         .then((res) => {
-          console.log('res > ', res);
-          console.log(Object.keys(res));
-
-          localStorage.setItem('user', null);
-
           if (Object.keys(res).includes('errors')) {
             const entries = Object.entries(res.errors);
             const array = entries.map((arr) => {

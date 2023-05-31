@@ -8,6 +8,21 @@
   src: url('./assets/font/Roboto-Regular.ttf') format('truetype');
 }
 
+$white: #ffffff;
+$whiteBorder: #d9d9d9;
+$whiteLetters: #bfbfbf;
+$whiteDevider: #e8e8e8;
+$blue: #1890ff;
+$darkBlue: #1162ad;
+$lightGrey: #8c8c8c;
+$grey: #595959;
+$blackLetters: #262626;
+$black075: rgba(0, 0, 0, 0.75);
+$black05: rgba(0, 0, 0, 0.5);
+$black085: rgba(0, 0, 0, 0.85);
+$red: #f5222d;
+$green: #52c41a;
+
 body {
   box-sizing: border-box;
   font-family: 'Inter';

@@ -1,6 +1,8 @@
+@import '../../index.scss';
+
 .header {
   height: 80px;
-  background-color: #ffffff;
+  background-color: $white;
   display: flex;
   justify-content: space-between;
 }
@@ -14,11 +16,20 @@
   justify-content: center;
 }
 
+.header__title:hover,
+.header__button-signup:hover,
+.header__button-signin:hover,
+.header__button-create-article:hover,
+.header__button-logout:hover,
+.header__button-profile:hover {
+  opacity: 0.6;
+}
+
 .header__title,
 .header__title:active,
 .header__title:visited {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.85);
+  color: $black085;
 }
 
 .header__buttons-container {
@@ -36,15 +47,15 @@
 .header__button-signin:active,
 .header__button-signin:visited {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.85);
+  color: $black085;
 }
 
 .header__button-signup {
   width: 109px;
   height: 51px;
   margin-left: 27px;
-  color: #52c41a;
-  border: 1px solid #52c41a;
+  color: $green;
+  border: 1px solid $green;
   border-radius: 5px;
 
   background-color: inherit;
@@ -61,8 +72,8 @@
 .header__button-create-article {
   width: 112px;
   height: 31px;
-  color: #52c41a;
-  border: 1px solid #52c41a;
+  color: $green;
+  border: 1px solid $green;
   border-radius: 5px;
 
   background-color: inherit;
@@ -80,7 +91,7 @@
   width: 109px;
   height: 51px;
   margin-left: 27px;
-  border: 1px solid rgba(0, 0, 0, 0.75);
+  border: 1px solid $black075;
   border-radius: 5px;
 
   background-color: inherit;
@@ -100,7 +111,7 @@
 .header__button-profile:active,
 .header__button-profile:visited {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.85);
+  color: $black085;
 }
 
 .header__button-profile-image {

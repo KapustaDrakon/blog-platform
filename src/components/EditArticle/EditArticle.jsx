@@ -1,12 +1,13 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+import classes from '../CreateArticle/CreateArticle.module.scss';
 import GetRequest from '../../services/GetRequest';
 
-import classes from './CreateArticle.module.scss';
-
-const CreateArticle = () => {
+const EditArticle = (props) => {
+  const { article } = props;
   const getRequest = new GetRequest();
 
   const {
@@ -25,10 +26,18 @@ const CreateArticle = () => {
   const user = useRef(JSON.parse(localStorage.getItem('user')));
   const [tag, setTag] = useState('');
   const [errorText, setErrorText] = useState('');
-  const [isCreate, setIsCreate] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
-  if (isCreate) {
-    return <Redirect to="/" />;
+  useEffect(() => {
+    if (article.tagList.length !== 0) {
+      article.tagList.map((articleTag) => {
+        append(articleTag);
+      });
+    }
+  }, []);
+
+  if (isEdit) {
+    return <Redirect to={`/articles/${article.slug}`} />;
   }
 
   if (!localStorage.getItem('user')) {
@@ -52,7 +61,7 @@ const CreateArticle = () => {
     console.log('data > ', data);
     (async () => {
       return await getRequest
-        .createArticle(data, user.current.token)
+        .editArticle(data, article.slug, user.current.token)
         .then((res) => {
           if (Object.keys(res).includes('errors')) {
             setErrorText('error');
@@ -60,7 +69,7 @@ const CreateArticle = () => {
             throw new Error();
           } else {
             reset();
-            setIsCreate(true);
+            setIsEdit(true);
             location.reload();
             return res;
           }
@@ -71,7 +80,7 @@ const CreateArticle = () => {
 
   return (
     <form className={classes['create-article']} onSubmit={handleSubmit(onSubmit)}>
-      <h2 className={classes['create-article__title']}>Create new article</h2>
+      <h2 className={classes['create-article__title']}>Edit article</h2>
 
       <div>
         <label htmlFor="create-article_title" className={classes['create-article__input-label']}>
@@ -81,6 +90,7 @@ const CreateArticle = () => {
           type="text"
           className={!errors.title ? classes['create-article__input'] : classes['create-article__input-error']}
           placeholder="Title"
+          defaultValue={article.title}
           id="create-article_title"
           autoFocus
           {...register('title', {
@@ -98,6 +108,7 @@ const CreateArticle = () => {
           type="text"
           className={!errors.description ? classes['create-article__input'] : classes['create-article__input-error']}
           placeholder="Description"
+          defaultValue={article.description}
           id="create-article_description"
           {...register('description', {
             required: 'Is required to fill in',
@@ -119,6 +130,7 @@ const CreateArticle = () => {
             !errors.body ? classes['create-article__textarea'] : classes['create-article__input-textarea-error']
           }
           placeholder="Text"
+          defaultValue={article.body}
           id="create-article_text"
           {...register('body', {
             required: 'Is required to fill in',
@@ -174,4 +186,12 @@ const CreateArticle = () => {
   );
 };
 
-export default CreateArticle;
+EditArticle.defaultProps = {
+  article: {},
+};
+
+EditArticle.propsTypes = {
+  article: PropTypes.object,
+};
+
+export default EditArticle;
