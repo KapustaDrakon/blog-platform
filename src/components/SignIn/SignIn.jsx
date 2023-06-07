@@ -6,8 +6,9 @@ import GetRequest from '../../services/GetRequest';
 
 import classes from './SignIn.module.scss';
 
-const SignIn = () => {
+const SignIn = (props) => {
   const getRequest = new GetRequest();
+  const { setWasEntered } = props;
 
   const {
     register,
@@ -26,9 +27,7 @@ const SignIn = () => {
   }
 
   const onSubmit = (data) => {
-    console.log(data);
     data.email = data.email.toLowerCase();
-    console.log(data);
     (async () => {
       return await getRequest
         .userLogin(data)
@@ -45,8 +44,9 @@ const SignIn = () => {
           } else {
             localStorage.setItem('user', JSON.stringify(res.user));
             reset();
+            setWasEntered(true);
             setIsLogin(true);
-            location.reload();
+            //location.reload();
             return res;
           }
         })

@@ -1,12 +1,14 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import GetRequest from '../../services/GetRequest';
 
 import classes from './CreateArticle.module.scss';
 
-const CreateArticle = () => {
+const CreateArticle = (props) => {
+  const { article } = props;
   const getRequest = new GetRequest();
 
   const {
@@ -26,6 +28,15 @@ const CreateArticle = () => {
   const [tag, setTag] = useState('');
   const [errorText, setErrorText] = useState('');
   const [isCreate, setIsCreate] = useState(false);
+
+  useEffect(() => {
+    if (!article.slug) return;
+    if (article.tagList.length !== 0) {
+      article.tagList.map((articleTag) => {
+        append(articleTag);
+      });
+    }
+  }, []);
 
   if (isCreate) {
     return <Redirect to="/" />;
@@ -49,29 +60,47 @@ const CreateArticle = () => {
   };
 
   const onSubmit = (data) => {
-    console.log('data > ', data);
-    (async () => {
-      return await getRequest
-        .createArticle(data, user.current.token)
-        .then((res) => {
-          if (Object.keys(res).includes('errors')) {
-            setErrorText('error');
-            console.log('error > ', errorText);
-            throw new Error();
-          } else {
-            reset();
-            setIsCreate(true);
-            location.reload();
-            return res;
-          }
-        })
-        .catch(() => {});
-    })();
+    if (article.slug) {
+      return (async () => {
+        return await getRequest
+          .editArticle(data, article.slug, user.current.token)
+          .then((res) => {
+            if (Object.keys(res).includes('errors')) {
+              setErrorText('error');
+              console.log('error > ', errorText);
+              throw new Error();
+            } else {
+              reset();
+              setIsCreate(true);
+              location.reload();
+              return res;
+            }
+          })
+          .catch(() => {});
+      })();
+    } else
+      return (async () => {
+        return await getRequest
+          .createArticle(data, user.current.token)
+          .then((res) => {
+            if (Object.keys(res).includes('errors')) {
+              setErrorText('error');
+              console.log('error > ', errorText);
+              throw new Error();
+            } else {
+              reset();
+              setIsCreate(true);
+              location.reload();
+              return res;
+            }
+          })
+          .catch(() => {});
+      })();
   };
 
   return (
     <form className={classes['create-article']} onSubmit={handleSubmit(onSubmit)}>
-      <h2 className={classes['create-article__title']}>Create new article</h2>
+      <h2 className={classes['create-article__title']}>{article.slug ? 'Edit article' : 'Create new article'}</h2>
 
       <div>
         <label htmlFor="create-article_title" className={classes['create-article__input-label']}>
@@ -82,6 +111,7 @@ const CreateArticle = () => {
           className={!errors.title ? classes['create-article__input'] : classes['create-article__input-error']}
           placeholder="Title"
           id="create-article_title"
+          defaultValue={article.slug ? article.title : null}
           autoFocus
           {...register('title', {
             required: 'Is required to fill in',
@@ -99,6 +129,7 @@ const CreateArticle = () => {
           className={!errors.description ? classes['create-article__input'] : classes['create-article__input-error']}
           placeholder="Description"
           id="create-article_description"
+          defaultValue={article.slug ? article.description : null}
           {...register('description', {
             required: 'Is required to fill in',
           })}
@@ -120,6 +151,7 @@ const CreateArticle = () => {
           }
           placeholder="Text"
           id="create-article_text"
+          defaultValue={article.slug ? article.body : null}
           {...register('body', {
             required: 'Is required to fill in',
           })}
@@ -172,6 +204,14 @@ const CreateArticle = () => {
       </div>
     </form>
   );
+};
+
+CreateArticle.defaultProps = {
+  article: {},
+};
+
+CreateArticle.propsTypes = {
+  article: PropTypes.object,
 };
 
 export default CreateArticle;

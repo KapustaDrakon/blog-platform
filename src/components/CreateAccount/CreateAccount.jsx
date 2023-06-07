@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 
 import GetRequest from '../../services/GetRequest';
 
-import classes from './CreateAcc.module.scss';
+import classes from './CreateAccount.module.scss';
 
-const CreateAcc = () => {
+const CreateAccount = () => {
   const getRequest = new GetRequest();
 
   const {
@@ -27,16 +27,13 @@ const CreateAcc = () => {
   }
 
   const onSubmit = (data) => {
-    console.log(data);
     data.email = data.email.toLowerCase();
-    console.log(data);
     (async () => {
       return await getRequest
         .userRegister(data)
         .then((res) => {
           if (Object.keys(res).includes('errors')) {
             const entries = Object.entries(res.errors);
-            console.log(entries);
             const array = entries.map((arr) => {
               if (arr.includes('username')) {
                 if (arr.includes('is already taken.')) {
@@ -231,4 +228,4 @@ const CreateAcc = () => {
   );
 };
 
-export default CreateAcc;
+export default CreateAccount;

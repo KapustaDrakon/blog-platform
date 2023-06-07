@@ -20,11 +20,7 @@
 
 .article__title-container {
   display: flex;
-  align-items: baseline;
-}
-
-.article__likes {
-  margin-left: 13px;
+  align-items: center;
 }
 
 .article__title {
@@ -71,19 +67,31 @@
   content: '';
   position: absolute;
   display: block;
-  top: 0;
+  top: -2px;
   left: 0;
   width: 16px;
   height: 16px;
   background: url('../../assets/images/Like.svg') no-repeat center;
 }
 
-.article__likes:checked::before {
+.article__likes-checked {
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  width: 16p;
+  height: 16px;
+  font-size: 12px;
+  line-height: 22px;
+  color: $black075;
+  position: relative;
+}
+
+.article__likes-checked::before {
   visibility: visible;
   content: '';
   position: absolute;
   display: block;
-  top: 0;
+  top: -2px;
   left: 0;
   width: 16px;
   height: 16px;
@@ -99,7 +107,8 @@
 }
 
 .article__like-count {
-  margin-left: 5px;
+  margin-left: 20px;
+  margin-bottom: 1px;
 }
 
 .article__tags {

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-import profile from '../../assets/images/Profile-Image.svg';
+import profile from '../../assets/images/smiley-cyrus.jpg';
 
 import classes from './Header.module.scss';
 
-const Header = ({ initial }) => {
+const Header = (props) => {
+  const { wasEntered, setWasEntered } = props;
+
   const buttonLogOut = () => {
     setIsLogin(false);
+    setWasEntered(false);
     setUser(null);
     localStorage.removeItem('user');
-    location.reload();
+    //location.reload();
   };
 
   const [isLogin, setIsLogin] = useState(false);
@@ -25,7 +27,7 @@ const Header = ({ initial }) => {
   useEffect(() => {
     if (!localStorage.getItem('user')) return;
     setIsLogin(true);
-  });
+  }, [wasEntered]);
 
   const imageFunc = () => {
     if (user.image) return user.image;
@@ -34,12 +36,12 @@ const Header = ({ initial }) => {
 
   return (
     <div className={classes.header}>
-      <Link to="/articles" className={classes.header__title} onClick={() => initial()}>
+      <Link to="/articles" className={classes.header__title}>
         Realworld Blog
       </Link>
 
       <div className={classes['header__buttons-container']}>
-        {isLogin ? (
+        {wasEntered && user ? (
           <div className={classes.header__buttons}>
             <Link to="/new-article" className={`${classes['header__button-create-article']}`}>
               Create article
@@ -65,14 +67,6 @@ const Header = ({ initial }) => {
       </div>
     </div>
   );
-};
-
-Header.defaultProps = {
-  initial: () => {},
-};
-
-Header.propTypes = {
-  initial: PropTypes.func,
 };
 
 export default Header;

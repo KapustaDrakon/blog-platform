@@ -3,7 +3,7 @@
 }
 
 .article__label {
-  display: none;
+  display: flex;
   position: absolute;
   width: 208px;
   height: 80px;

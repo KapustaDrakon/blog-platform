@@ -4,12 +4,17 @@ import PropTypes from 'prop-types';
 import { ArticleItem } from '../ArcticleItem';
 
 const ArticlesList = (props) => {
-  const { articles, initial } = props;
+  const { articles, wasEntered, changeArticlesLike } = props;
   if (articles !== undefined) {
     return (
       <div>
         {articles.map((article) => (
-          <ArticleItem article={article} key={article.slug} initial={initial} />
+          <ArticleItem
+            article={article}
+            wasEntered={wasEntered}
+            changeArticlesLike={changeArticlesLike}
+            key={article.slug}
+          />
         ))}
       </div>
     );
@@ -18,12 +23,10 @@ const ArticlesList = (props) => {
 
 ArticlesList.defaultProps = {
   articles: [],
-  initial: () => {},
 };
 
 ArticlesList.propTypes = {
   articles: PropTypes.array,
-  initial: PropTypes.func,
 };
 
 export default ArticlesList;

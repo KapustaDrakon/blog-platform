@@ -6,10 +6,11 @@ import PropTypes from 'prop-types';
 import GetRequest from '../../services/GetRequest';
 
 import classes from './ArticleItem.module.scss';
+import '../ShowArticle/ShowArticle.css';
 
 const ArticleItem = (props) => {
   const getRequest = new GetRequest();
-  const { article, initial } = props;
+  const { article, wasEntered, changeArticlesLike } = props;
   let idxTag = 0;
 
   const dateCreated = (date) => {
@@ -22,24 +23,24 @@ const ArticleItem = (props) => {
   };
 
   const showDelete = () => {
-    const label = document.querySelector('.article__label');
-    if (label.classList.contains('article__label_show')) {
-      label.classList.remove('article__label_show');
-    } else {
-      label.classList.add('article__label_show');
-    }
+    setOnDelete(!onDelete);
   };
 
   const user = useRef(JSON.parse(localStorage.getItem('user')));
-  const [errorText, setErrorText] = useState('');
   const [likeCount, setLikeCount] = useState(article.favoritesCount);
+  const [onDelete, setOnDelete] = useState(false);
+  const [like, setLike] = useState(article.favorited);
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
       const likeButtons = document.getElementsByName(`like-${article.title}`);
       [...likeButtons].map((like) => (like.disabled = true));
     }
-  });
+  }, [wasEntered]);
+
+  useEffect(() => {
+    setLike(article.favorited);
+  }, [article.favorited]);
 
   const articleDelete = () => {
     (async () => {
@@ -47,8 +48,6 @@ const ArticleItem = (props) => {
         .deleteArticle(article.slug, user.current.token)
         .then((res) => {
           if (Object.keys(res).includes('errors')) {
-            setErrorText('error');
-            console.log('error > ', errorText);
             throw new Error();
           } else if (res === 'ok') {
             location.reload();
@@ -59,24 +58,27 @@ const ArticleItem = (props) => {
     })();
   };
 
-  const changeLike = (event) => {
-    if (event.target.checked) {
+  const changeLike = () => {
+    if (article.favorited) {
+      setLike(false);
+      article.favorited = false;
+    } else {
+      setLike(true);
+      article.favorited = true;
+    }
+    if (!like) {
       setLikeCount(likeCount + 1);
     } else setLikeCount(likeCount - 1);
     (async () => {
-      return await getRequest
-        .likeArticle(event.target.checked, article.slug, user.current.token)
-        .then((res) => {
-          if (Object.keys(res).includes('errors')) {
-            setErrorText('error');
-            console.log('error > ', errorText);
-            throw new Error();
-          } else {
-            return res;
-          }
-        })
-        .finally(() => initial());
+      return await getRequest.likeArticle(!like, article.slug, user.current.token).then((res) => {
+        if (Object.keys(res).includes('errors')) {
+          throw new Error();
+        } else {
+          return res;
+        }
+      });
     })();
+    changeArticlesLike(article.slug, article.favorited);
   };
 
   return (
@@ -87,22 +89,21 @@ const ArticleItem = (props) => {
             <h2 className={classes.article__title}>{article.title}</h2>
           </Link>
           <label className={classes['article__likes-label']}>
-            {article.favorited ? (
-              <input
-                type="checkbox"
+            {article.favorited && like ? (
+              <button
+                type="button"
                 id={`like-${article.title}`}
                 name={`like-${article.title}`}
-                className={classes.article__likes}
-                defaultChecked
-                onChange={(event) => changeLike(event)}
+                className={classes['article__likes-checked']}
+                onClick={() => changeLike()}
               />
             ) : (
-              <input
-                type="checkbox"
+              <button
+                type="button"
                 id={`like-${article.title}`}
                 name={`like-${article.title}`}
                 className={classes.article__likes}
-                onChange={(event) => changeLike(event)}
+                onClick={() => changeLike()}
               />
             )}
             <span className={classes['article__like-count']}>{likeCount}</span>
@@ -133,35 +134,37 @@ const ArticleItem = (props) => {
             alt={`${article.author}-image`}
           ></img>
         </div>
-        {user.current !== null ? (
+        {user.current !== null && wasEntered ? (
           user.current.username === article.author.username ? (
             <div className={classes['article__buttons']}>
               <button
                 type="button"
                 className={classes['article__button-delete']}
-                id="button-delete"
+                id={`${article.slug}-button-delete`}
                 onClick={showDelete}
               >
                 Delete
               </button>
               <div className="article__label-position">
-                <label className="article__label">
-                  <div className="article__label-arrow"></div>
-                  <div className="article__label-container">
-                    <div className="article__label-warning-container">
-                      <div className="article__label-warning"></div>
+                {onDelete ? (
+                  <div className="article__label" id={`${article.slug}-label-delete`}>
+                    <div className="article__label-arrow"></div>
+                    <div className="article__label-container">
+                      <div className="article__label-warning-container">
+                        <div className="article__label-warning"></div>
+                      </div>
+                      Are you sure to delete this article?
                     </div>
-                    Are you sure to delete this article?
+                    <div className="article__buttons">
+                      <button type="button" className="article__button-no" onClick={showDelete}>
+                        No
+                      </button>
+                      <button type="button" className="article__button-yes" onClick={articleDelete}>
+                        Yes
+                      </button>
+                    </div>
                   </div>
-                  <div className="article__buttons">
-                    <button type="button" className="article__button-no" onClick={showDelete}>
-                      No
-                    </button>
-                    <button type="button" className="article__button-yes" onClick={articleDelete}>
-                      Yes
-                    </button>
-                  </div>
-                </label>
+                ) : null}
               </div>
               <Link to={`/articles/${article.slug}/edit`} className={classes['article__button-edit']}>
                 Edit
@@ -176,12 +179,10 @@ const ArticleItem = (props) => {
 
 ArticleItem.defaultProps = {
   article: {},
-  initial: () => {},
 };
 
 ArticleItem.propsTypes = {
   article: PropTypes.object,
-  initial: PropTypes.func,
 };
 
 export default ArticleItem;

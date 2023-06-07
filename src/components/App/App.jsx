@@ -4,12 +4,11 @@ import { Spin, Pagination } from 'antd';
 
 import { Header } from '../Header';
 import { ArticlesList } from '../ArticlesList';
-import { CreateAcc } from '../CreateAcc';
+import { CreateAccount } from '../CreateAccount';
 import { SignIn } from '../SignIn';
 import { EditProfile } from '../EditProfile';
 import { CreateArticle } from '../CreateArticle';
 import { ShowArticle } from '../ShowArticle';
-import { EditArticle } from '../EditArticle';
 import GetRequest from '../../services/GetRequest';
 
 import classes from './App.module.scss';
@@ -25,6 +24,7 @@ const App = () => {
   let pageState = useRef(1);
   const [loading, setLoad] = useState(true);
   const [error, setError] = useState(false);
+  const [wasEntered, setWasEntered] = useState(false);
 
   const getArticlesOnPageFunction = (pageState) => {
     (async () => {
@@ -66,22 +66,41 @@ const App = () => {
   };
 
   useEffect(() => {
-    getArticlesFunction();
-    getArticlesOnPageFunction(pageState.current);
-    getArticlesCountFunction();
+    if (!localStorage.getItem('user')) return;
+    setWasEntered(true);
   }, []);
 
-  const initial = () => {
+  useEffect(() => {
     getArticlesFunction();
     getArticlesOnPageFunction(pageState.current);
     getArticlesCountFunction();
+  }, [wasEntered]);
+
+  const changeArticlesLike = (slug, like) => {
+    const idx = articles.findIndex((el) => el.slug === slug);
+    const oldItem = articles[idx];
+    if (like) {
+      const newItem = {
+        ...oldItem,
+        favorited: like,
+        favoritesCount: ++oldItem.favoritesCount,
+      };
+      return setArticles([...articles.slice(0, idx), newItem, ...articles.slice(idx + 1)]);
+    } else {
+      const newItem = {
+        ...oldItem,
+        favorited: like,
+        favoritesCount: --oldItem.favoritesCount,
+      };
+      return setArticles([...articles.slice(0, idx), newItem, ...articles.slice(idx + 1)]);
+    }
   };
 
   const articlesList = (
     <div>
       {articles.length !== 0 ? (
         <div>
-          <ArticlesList articles={articlesOnPage} initial={initial} />
+          <ArticlesList articles={articlesOnPage} wasEntered={wasEntered} changeArticlesLike={changeArticlesLike} />
           <Pagination
             className={classes['section__pagination']}
             current={pageState.current}
@@ -100,7 +119,7 @@ const App = () => {
 
   return (
     <Router>
-      <Header initial={initial} />
+      <Header wasEntered={wasEntered} setWasEntered={setWasEntered} />
       <section className={classes.section}>
         {error ? (
           <div className={classes['section__error-container']}>Error</div>
@@ -118,10 +137,10 @@ const App = () => {
               {articlesList}
             </Route>
             <Route path="/sign-in" exact>
-              <SignIn />
+              <SignIn setWasEntered={setWasEntered} />
             </Route>
             <Route path="/sign-up" exact>
-              <CreateAcc />
+              <CreateAccount />
             </Route>
             <Route path="/new-article" exact>
               <CreateArticle />
@@ -131,12 +150,12 @@ const App = () => {
             </Route>
             {articles.map((article) => (
               <Route path={`/articles/${article.slug}`} key={article.slug} exact>
-                <ShowArticle article={article} initial={initial} />
+                <ShowArticle article={article} wasEntered={wasEntered} changeArticlesLike={changeArticlesLike} />
               </Route>
             ))}
             {articles.map((article) => (
               <Route path={`/articles/${article.slug}/edit`} key={article.slug} exact>
-                <EditArticle article={article} />
+                <CreateArticle article={article} />
               </Route>
             ))}
             <Route>
