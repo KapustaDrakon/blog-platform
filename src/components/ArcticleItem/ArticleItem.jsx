@@ -29,7 +29,6 @@ const ArticleItem = (props) => {
   const user = useRef(JSON.parse(localStorage.getItem('user')));
   const [likeCount, setLikeCount] = useState(article.favoritesCount);
   const [onDelete, setOnDelete] = useState(false);
-  const [like, setLike] = useState(article.favorited);
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -37,10 +36,6 @@ const ArticleItem = (props) => {
       [...likeButtons].map((like) => (like.disabled = true));
     }
   }, [wasEntered]);
-
-  useEffect(() => {
-    setLike(article.favorited);
-  }, [article.favorited]);
 
   const articleDelete = () => {
     (async () => {
@@ -59,18 +54,12 @@ const ArticleItem = (props) => {
   };
 
   const changeLike = () => {
+    article.favorited = !article.favorited;
     if (article.favorited) {
-      setLike(false);
-      article.favorited = false;
-    } else {
-      setLike(true);
-      article.favorited = true;
-    }
-    if (!like) {
-      setLikeCount(likeCount + 1);
-    } else setLikeCount(likeCount - 1);
+      setLikeCount(++article.favoritesCount);
+    } else setLikeCount(--article.favoritesCount);
     (async () => {
-      return await getRequest.likeArticle(!like, article.slug, user.current.token).then((res) => {
+      return await getRequest.likeArticle(article.favorited, article.slug, user.current.token).then((res) => {
         if (Object.keys(res).includes('errors')) {
           throw new Error();
         } else {
@@ -78,7 +67,7 @@ const ArticleItem = (props) => {
         }
       });
     })();
-    changeArticlesLike(article.slug, article.favorited);
+    changeArticlesLike(article.slug, article.favorited, likeCount);
   };
 
   return (
@@ -89,7 +78,7 @@ const ArticleItem = (props) => {
             <h2 className={classes.article__title}>{article.title}</h2>
           </Link>
           <label className={classes['article__likes-label']}>
-            {article.favorited && like ? (
+            {article.favorited ? (
               <button
                 type="button"
                 id={`like-${article.title}`}

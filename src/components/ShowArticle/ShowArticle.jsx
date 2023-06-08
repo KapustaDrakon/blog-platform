@@ -10,7 +10,7 @@ import './ShowArticle.css';
 
 const ShowArticle = (props) => {
   const getRequest = new GetRequest();
-  let { article, wasEntered, changeArticlesLike } = props;
+  const { article, wasEntered, changeArticlesLike } = props;
   let idxTag = 0;
 
   const dateCreated = (date) => {
@@ -30,7 +30,6 @@ const ShowArticle = (props) => {
   const [isDelete, setIsDelete] = useState(false);
   const [likeCount, setLikeCount] = useState(article.favoritesCount);
   const [onDelete, setOnDelete] = useState(false);
-  const [like, setLike] = useState(article.favorited);
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -38,10 +37,6 @@ const ShowArticle = (props) => {
       [...likeButtons].map((like) => (like.disabled = true));
     }
   }, [wasEntered]);
-
-  useEffect(() => {
-    setLike(article.favorited);
-  }, [article.favorited]);
 
   if (isDelete) {
     return <Redirect to="/" />;
@@ -65,18 +60,12 @@ const ShowArticle = (props) => {
   };
 
   const changeLike = () => {
+    article.favorited = !article.favorited;
     if (article.favorited) {
-      setLike(false);
-      article.favorited = false;
-    } else {
-      setLike(true);
-      article.favorited = true;
-    }
-    if (!like) {
-      setLikeCount(likeCount + 1);
-    } else setLikeCount(likeCount - 1);
+      setLikeCount(++article.favoritesCount);
+    } else setLikeCount(--article.favoritesCount);
     (async () => {
-      return await getRequest.likeArticle(!like, article.slug, user.current.token).then((res) => {
+      return await getRequest.likeArticle(article.favorited, article.slug, user.current.token).then((res) => {
         if (Object.keys(res).includes('errors')) {
           throw new Error();
         } else {
@@ -84,7 +73,7 @@ const ShowArticle = (props) => {
         }
       });
     })();
-    changeArticlesLike(article.slug, article.favorited);
+    changeArticlesLike(article.slug, article.favorited, likeCount);
   };
 
   return (
@@ -94,7 +83,7 @@ const ShowArticle = (props) => {
           <h2 className={classes['article__title-all']}>{article.title}</h2>
 
           <label className={classes['article__likes-label']}>
-            {article.favorited && like ? (
+            {article.favorited ? (
               <button
                 type="button"
                 id={`like-${article.title}`}

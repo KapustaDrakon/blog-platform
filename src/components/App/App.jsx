@@ -76,23 +76,37 @@ const App = () => {
     getArticlesCountFunction();
   }, [wasEntered]);
 
-  const changeArticlesLike = (slug, like) => {
+  const changeArticlesLike = (slug, like, likeCount) => {
     const idx = articles.findIndex((el) => el.slug === slug);
+    const idxOnPage = articlesOnPage.findIndex((el) => el.slug === slug);
     const oldItem = articles[idx];
+    const oldItemOnPage = articlesOnPage[idxOnPage];
     if (like) {
       const newItem = {
         ...oldItem,
         favorited: like,
-        favoritesCount: ++oldItem.favoritesCount,
+        favoritesCount: likeCount + 1,
       };
-      return setArticles([...articles.slice(0, idx), newItem, ...articles.slice(idx + 1)]);
+      const newItemOnPage = {
+        ...oldItemOnPage,
+        favorited: like,
+        favoritesCount: likeCount + 1,
+      };
+      setArticles([...articles.slice(0, idx), newItem, ...articles.slice(idx + 1)]);
+      setArticlesOnPage([...articlesOnPage.slice(0, idxOnPage), newItemOnPage, ...articlesOnPage.slice(idxOnPage + 1)]);
     } else {
       const newItem = {
         ...oldItem,
         favorited: like,
-        favoritesCount: --oldItem.favoritesCount,
+        favoritesCount: likeCount - 1,
       };
-      return setArticles([...articles.slice(0, idx), newItem, ...articles.slice(idx + 1)]);
+      const newItemOnPage = {
+        ...oldItemOnPage,
+        favorited: like,
+        favoritesCount: likeCount - 1,
+      };
+      setArticles([...articles.slice(0, idx), newItem, ...articles.slice(idx + 1)]);
+      setArticlesOnPage([...articlesOnPage.slice(0, idxOnPage), newItemOnPage, ...articlesOnPage.slice(idxOnPage + 1)]);
     }
   };
 
