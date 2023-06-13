@@ -26,7 +26,6 @@ const CreateArticle = (props) => {
 
   const user = useRef(JSON.parse(localStorage.getItem('user')));
   const [tag, setTag] = useState('');
-  const [errorText, setErrorText] = useState('');
   const [isCreate, setIsCreate] = useState(false);
 
   useEffect(() => {
@@ -66,8 +65,6 @@ const CreateArticle = (props) => {
           .editArticle(data, article.slug, user.current.token)
           .then((res) => {
             if (Object.keys(res).includes('errors')) {
-              setErrorText('error');
-              console.log('error > ', errorText);
               throw new Error();
             } else {
               reset();
@@ -84,8 +81,6 @@ const CreateArticle = (props) => {
           .createArticle(data, user.current.token)
           .then((res) => {
             if (Object.keys(res).includes('errors')) {
-              setErrorText('error');
-              console.log('error > ', errorText);
               throw new Error();
             } else {
               reset();
@@ -116,7 +111,7 @@ const CreateArticle = (props) => {
           {...register('title', {
             required: 'Is required to fill in',
           })}
-        ></input>
+        />
         <div>{errors?.title && <p className={classes['create-article__error']}>{errors?.title.message}</p>}</div>
       </div>
 
@@ -133,7 +128,7 @@ const CreateArticle = (props) => {
           {...register('description', {
             required: 'Is required to fill in',
           })}
-        ></input>
+        />
 
         <div>
           {errors?.description && <p className={classes['create-article__error']}>{errors?.description.message}</p>}
@@ -155,7 +150,7 @@ const CreateArticle = (props) => {
           {...register('body', {
             required: 'Is required to fill in',
           })}
-        ></textarea>
+        />
 
         <div>{errors?.body && <p className={classes['create-article__error']}>{errors?.body.message}</p>}</div>
       </div>

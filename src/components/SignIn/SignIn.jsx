@@ -46,7 +46,6 @@ const SignIn = (props) => {
             reset();
             setWasEntered(true);
             setIsLogin(true);
-            //location.reload();
             return res;
           }
         })
@@ -77,7 +76,7 @@ const SignIn = (props) => {
             required: 'Is required to fill in',
             pattern: /[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z0-9]+/,
           })}
-        ></input>
+        />
 
         <div>
           {errors?.email && (
@@ -105,7 +104,7 @@ const SignIn = (props) => {
           {...register('password', {
             required: 'Is required to fill in',
           })}
-        ></input>
+        />
 
         <div>
           {errors?.password && <p className={classes['sign-in__error']}>{errors?.password.message || 'Error'}</p>}

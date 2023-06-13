@@ -121,7 +121,7 @@ const ArticleItem = (props) => {
             className={classes['article__author-image']}
             src={article.author.image}
             alt={`${article.author}-image`}
-          ></img>
+          />
         </div>
         {user.current !== null && wasEntered ? (
           user.current.username === article.author.username ? (

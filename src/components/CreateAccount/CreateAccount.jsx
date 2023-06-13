@@ -88,7 +88,7 @@ const CreateAccount = () => {
               message: 'Your username must be no more than 20 characters.',
             },
           })}
-        ></input>
+        />
 
         <div>
           {errors?.username && (
@@ -120,7 +120,7 @@ const CreateAccount = () => {
             pattern: /[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z0-9]+/,
             required: 'Is required to fill in',
           })}
-        ></input>
+        />
 
         <div>
           {errors?.email && (
@@ -153,7 +153,7 @@ const CreateAccount = () => {
             required: 'Is required to fill in',
             pattern: /^\S*$/,
           })}
-        ></input>
+        />
 
         <div>
           {errors?.password && (
@@ -182,7 +182,7 @@ const CreateAccount = () => {
               }
             },
           })}
-        ></input>
+        />
 
         <div>
           {errors?.repeat_password && (
@@ -203,7 +203,7 @@ const CreateAccount = () => {
             {...register('agree', {
               required: 'Is required to tick',
             })}
-          ></input>
+          />
           <label className={classes['create-account__check-label']} htmlFor="create_check">
             I agree to the processing of my personal information
           </label>

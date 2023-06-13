@@ -33,8 +33,6 @@ const EditProfile = () => {
   const onSubmit = (data) => {
     data.token = user.current.token;
     data.email = data.email.toLowerCase();
-    console.log('data > ', data);
-
     (async () => {
       return await getRequest
         .userEdit(data)
@@ -51,7 +49,6 @@ const EditProfile = () => {
             setErrorText(array);
             throw new Error();
           } else {
-            console.log(res);
             localStorage.setItem('user', JSON.stringify(res.user));
             reset();
             setIsEdit(true);
@@ -94,7 +91,7 @@ const EditProfile = () => {
               message: 'Your username must be no more than 20 characters.',
             },
           })}
-        ></input>
+        />
 
         <div>
           {errors?.username && <p className={classes['edit-profile__error']}>{errors?.username.message || 'Error'}</p>}
@@ -123,7 +120,7 @@ const EditProfile = () => {
             required: 'Is required to fill in',
             pattern: /[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z0-9]+/,
           })}
-        ></input>
+        />
 
         <div>
           {errors?.email && (
@@ -155,7 +152,7 @@ const EditProfile = () => {
               message: 'Your password must be no more than 40 characters.',
             },
           })}
-        ></input>
+        />
 
         <div>
           {errors?.password && <p className={classes['edit-profile__error']}>{errors?.password.message || 'Error'}</p>}
@@ -176,7 +173,7 @@ const EditProfile = () => {
             required: 'Is required to fill in',
             pattern: /^https?:\/\/\S+(?:jpg|jpeg|png|svg|gif)$/,
           })}
-        ></input>
+        />
 
         <div>
           {errors?.image && (

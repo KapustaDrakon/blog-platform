@@ -13,7 +13,6 @@ const Header = (props) => {
     setWasEntered(false);
     setUser(null);
     localStorage.removeItem('user');
-    //location.reload();
   };
 
   const [isLogin, setIsLogin] = useState(false);
